@@ -43,5 +43,5 @@ end; $$;
 drop trigger if exists climate_profile_on_signup on auth.users;
 create trigger climate_profile_on_signup after insert on auth.users for each row execute function public.create_climate_profile();
 insert into public.profiles(user_id,display_name,phone,role) select id,coalesce(raw_user_meta_data->>'display_name',''),coalesce(raw_user_meta_data->>'phone',''),'user' from auth.users on conflict(user_id) do nothing;
--- Register the intended admin in Supabase Auth first, then run in SQL Editor:
+-- Register the intended admin in Supabase Auth first, then promote using trusted SQL Editor:
 -- update public.profiles set role='admin' where user_id=(select id from auth.users where lower(email)=lower('abiturijeelyse@gmail.com'));
